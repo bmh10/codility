@@ -7,6 +7,7 @@ import java.util.Arrays;
 
 public class Triangle {
 
+    // Time: O(nlogn) Space: O(1)
     public int solution(int[] A) {
         Arrays.sort(A);
 
