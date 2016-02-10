@@ -16,14 +16,10 @@ public class Dominator {
         final Deque<Integer> stack = new ArrayDeque<Integer>();
 
         for (int a : A) {
-            if (stack.isEmpty()) {
+            if (stack.isEmpty() || stack.peek() == a) {
                 stack.push(a);
             } else {
-                if (stack.peek() != a) {
-                    stack.pop();
-                } else {
-                    stack.push(a);
-                }
+                stack.pop();
             }
         }
 
