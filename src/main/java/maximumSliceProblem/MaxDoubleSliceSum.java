@@ -19,6 +19,7 @@ public class MaxDoubleSliceSum {
             maxBegin[N-1-i] = Math.max(maxBegin[N-i] + A[N-1-i], 0);
         }
 
+        // Moved inside previous loop
         /*for (int i = N-2; i > 0; i--) {
             maxBegin[i] = Math.max(maxBegin[i+1] + A[i], 0);
         }*/
@@ -53,10 +54,5 @@ public class MaxDoubleSliceSum {
 
         final int G[] = { -4, -5, -1, -5, -7, -19, -11 };
         Assert.assertEquals(0, solution(G));
-
-        //A triplet (X, Y, Z), such that 0 ≤ X < Y < Z < N, is called a double slice.
-
-        //The sum of double slice (X, Y, Z) is the total
-        //of A[X + 1] + A[X + 2] + ... + A[Y − 1] + A[Y + 1] + A[Y + 2] + ... + A[Z − 1].
     }
 }
