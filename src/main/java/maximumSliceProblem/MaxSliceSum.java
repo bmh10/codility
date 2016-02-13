@@ -1,4 +1,4 @@
-package maximumSliceProblem.leader;
+package maximumSliceProblem;
 
 import org.junit.Assert;
 import org.junit.Test;
