@@ -31,8 +31,5 @@ public class Triangle {
     public void test() {
         final int[] A = { 10, 2, 5, 1, 8, 20 };
         Assert.assertEquals(1, solution(A));
-
-        final int[] B = { 10, 50, 5, 1 };
-        Assert.assertEquals(1, solution(A));
     }
 }

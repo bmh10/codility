@@ -5,6 +5,7 @@ import org.junit.Test;
 
 public class MinAvgTwoSlice {
 
+    // Time O(N) Space O(1)
     public int solution(int[] A) {
         final int N = A.length;
 
