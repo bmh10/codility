@@ -28,12 +28,12 @@ public class CountSemiprimes {
         }
 
         // Calculate semiprimes over full range and use prefix sum
-        int[] semiprimesAtPoint = new int[N+1];
+        int[] semiprimesUpToPoint = new int[N+1];
         int semiprimeCount = 0;
         for (int n = 0; n <= N; n++) {
             int smallestPrimeDivisor = F[n];
             if (smallestPrimeDivisor == 0) {
-                semiprimesAtPoint[n] = semiprimeCount;
+                semiprimesUpToPoint[n] = semiprimeCount;
                 continue;
             }
 
@@ -43,13 +43,13 @@ public class CountSemiprimes {
                 semiprimeCount++;
             }
 
-            semiprimesAtPoint[n] = semiprimeCount;
+            semiprimesUpToPoint[n] = semiprimeCount;
         }
 
         // For each range calculate no. of semi-primes
         int[] ans = new int[M];
         for (int m = 0; m < M; m++) {
-            ans[m] = semiprimesAtPoint[Q[m]] - semiprimesAtPoint[P[m]-1];
+            ans[m] = semiprimesUpToPoint[Q[m]] - semiprimesUpToPoint[P[m]-1];
         }
 
         return ans;
