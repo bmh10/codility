@@ -9,36 +9,47 @@ public class FibFrog {
 
     public int solution(int[] A) {
         final int N = A.length;
+        final int LEFT_BANK = 0;
+        final int RIGHT_BANK = N + 1;
 
-        Set<Integer> fibs = generateFibs(N);
-        Map<Integer, Integer> jumps = new LinkedHashMap<>();
+        final Set<Integer> fibs = generateFibs(RIGHT_BANK);
+        fibs.remove(0);
 
-        jumps.put(-1, 0);
-        for (int i = 0; i < N; i++) {
-            if (A[i] == 1) {
-                jumps.put(i, Integer.MAX_VALUE - 1);
+        final int[] jumps = new int[N + 2];
+        jumps[LEFT_BANK] = 0;
+        jumps[RIGHT_BANK] = -1;
+
+        final int[] Anew = new int[N + 2];
+        Anew[LEFT_BANK] = 1;
+        Anew[RIGHT_BANK] = 1;
+
+        for (int i = LEFT_BANK + 1; i < RIGHT_BANK; i++) {
+            jumps[i] = -1;
+            Anew[i] = A[i-1];
+        }
+
+        for (int i = LEFT_BANK + 1; i <= RIGHT_BANK; i++) {
+            if (Anew[i] == 0) {
+                continue;
+            }
+
+            jumps[i] = Integer.MAX_VALUE;
+
+            for (int jumpSize : fibs) {
+                int prevIdx = i - jumpSize;
+                if (prevIdx < 0 || Anew[prevIdx] == 0 || jumps[prevIdx] == -1) {
+                    continue;
+                }
+
+                jumps[i] = Math.min(jumps[i], jumps[prevIdx] + 1);
+            }
+
+            if (jumps[i] == Integer.MAX_VALUE) {
+                jumps[i] = -1;
             }
         }
 
-        jumps.put(N, Integer.MAX_VALUE);
-
-        for (Map.Entry<Integer, Integer> current : jumps.entrySet()) {
-            for (Map.Entry<Integer, Integer> prev : jumps.entrySet()) {
-                int currentIdx = current.getKey();
-                int prevIdx = prev.getKey();
-                if (currentIdx == prevIdx) {
-                    break;
-                }
-
-                int requiredJumps = currentIdx - prevIdx;
-                if (fibs.contains(requiredJumps)) {
-                    jumps.put(currentIdx, Math.min(current.getValue(), prev.getValue() + 1));
-                }
-            }
-        }
-
-        int minJumps = jumps.get(N);
-        return minJumps == Integer.MAX_VALUE ? -1 : minJumps;
+        return jumps[RIGHT_BANK];
     }
 
     private Set<Integer> generateFibs(int N) {
@@ -52,20 +63,8 @@ public class FibFrog {
         return new HashSet<>(fibs);
     }
 
-    private int fib(int n) {
-        final double sqrt5 = Math.sqrt(5);
-        double a = Math.pow((1d + sqrt5) / 2d, n);
-        double b = Math.pow((1d - sqrt5) / 2d, n);
-        return (int)((a - b) / sqrt5);
-    }
-
     @Test
     public void test() {
-        Assert.assertEquals(0, fib(0));
-        Assert.assertEquals(1, fib(1));
-        Assert.assertEquals(1, fib(2));
-        Assert.assertEquals(13, fib(7));
-
         final int[] A = { 0, 0, 0, 1, 1, 0, 1, 0, 0, 0, 0 };
         Assert.assertEquals(3, solution(A));
 
