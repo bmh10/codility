@@ -3,9 +3,48 @@ package binarySearchAlgorithm;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.util.*;
+
 public class NailingPlanks {
 
+    // TODO: this does not work
     public int solution(int[] A, int[] B, int[] C) {
+        final int N = A.length;
+        final int M = C.length;
+
+        Map<Integer, Integer> nailPositionToIdx = new HashMap<>();
+
+        for (int i = 0; i < M; i++) {
+            nailPositionToIdx.put(C[i], i);
+        }
+
+        int overallMaxNailIdx = Integer.MIN_VALUE;
+
+        // Find min idx nail for each plank
+        for (int i = 0; i < N; i++) {
+            int plankStart = A[i];
+            int plankEnd = B[i];
+            int minNailIdxForPlank = Integer.MAX_VALUE;
+            // TODO: find min nail idx using binary search
+            for (int j = plankStart; j <= plankEnd; j++) {
+                Integer nailIdx = nailPositionToIdx.get(j);
+                if (nailIdx == null) continue;
+                minNailIdxForPlank = Math.min(minNailIdxForPlank, nailIdx);
+            }
+
+            // No nail for this plank
+            if (minNailIdxForPlank == Integer.MAX_VALUE) {
+                return -1;
+            }
+
+            overallMaxNailIdx = Math.max(overallMaxNailIdx, minNailIdxForPlank);
+        }
+
+        return overallMaxNailIdx + 1;
+    }
+
+
+    public int solutionBruteForce(int[] A, int[] B, int[] C) {
         final int N = A.length;
         final int M = C.length;
 
