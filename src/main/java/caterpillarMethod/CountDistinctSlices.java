@@ -3,41 +3,52 @@ package caterpillarMethod;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 public class CountDistinctSlices {
 
-    // TODO: incorrect
-    /*public int solution(int M, int[] A) {
+    // Time O(N) Space O(M)
+    public int solution(int M, int[] A) {
         final int N = A.length;
-
-        // Pre-store no. of distinct combos obtained from
-        // distinct set of each size up to M
-        final int[] distinctCombos = new int[M+2];
-        distinctCombos[1] = 1;
-        for (int i = 2; i < M + 2; i++) {
-            distinctCombos[i] = distinctCombos[i-1] + i;
-        }
-
         int count = 0;
-        Set<Integer> currSet = new HashSet<>();
-        for (int i = 0; i < N; i++) {
-            currSet.add(A[i]);
-            if (i+1 == N || currSet.contains(A[i+1])) {
-                count += distinctCombos[currSet.size()];
-                if (count > 1000000000) {
-                    return 1000000000;
+        int start = 0;
+        int end = 0;
+        // Instead of using bi-directional map
+        final Map<Integer, Integer> valToLastSeenIdx = new HashMap<>(M+1);
+        final Map<Integer, Integer> lastSeenIdxToVal = new HashMap<>(M+1);
+
+        while (end < N) {
+            valToLastSeenIdx.put(A[end], end);
+            lastSeenIdxToVal.put(end, A[end]);
+            count += (end - start + 1);
+            if (count > 1000000000) {
+                return 1000000000;
+            }
+
+            end++;
+            if (end < N && valToLastSeenIdx.containsKey(A[end])) {
+                int lastSeenIdx = valToLastSeenIdx.get(A[end]);
+                for (int i = start; i <= lastSeenIdx; i++) {
+                    Integer val = lastSeenIdxToVal.get(i);
+                    if (val == null) {
+                        continue;
+                    }
+                    lastSeenIdxToVal.remove(i);
+                    valToLastSeenIdx.remove(val);
                 }
-                currSet.clear();
+
+                start = lastSeenIdx + 1;
             }
         }
 
         return count;
-    }*/
+    }
 
     // Brute force
-    public int solution(int M, int[] A) {
+    public int solutionBruteForce(int M, int[] A) {
         final int N = A.length;
         Set<Integer> set = new HashSet<>();
         int count = 0;
