@@ -6,6 +6,7 @@ import org.junit.Test;
 public class NumberSolitaire {
 
     // Time O(N) Space O(N)
+    // Could make space O(1) by only storing dp for last 6 items
     public int solution(int[] A) {
         final int N = A.length;
         final int[] dp = new int[N];
